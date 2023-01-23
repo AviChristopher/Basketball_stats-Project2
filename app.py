@@ -1,91 +1,218 @@
 from constants import PLAYERS
 from constants import TEAMS
+from statistics import mean
+
 cleaned_data=[]
-# print(cleaned_data)
+exp_player=[]
+inexp_player=[]
+Panthers=[]
+Bandits=[]
+Warriors=[]
+
+#print(exp_player)
 
 num_players_team=int(len(PLAYERS)/len(TEAMS))
 #print(num_players_team)
 
 def clean_data(PLAYERS):
-        cleaned=[]
-        for player in PLAYERS:
+    #exp_list=[]
+    #inexp_list=[]
+    for player in PLAYERS:
             # print(player)
             fixed={}
             fixed['name']=player['name']
             split_guardians= player['guardians'].split(' and ')
             fixed['guardians']=split_guardians          
             if player['experience']=='YES':
-                fixed['experiece'] = True
+              fixed['experience'] = True 
+              # exp_list.append(player)
+              # exp_player.append(exp_list)
             else:
-                fixed['experience']=False
+                fixed['experience']=False             
             split_height = player['height'].split()
             split_height = int(split_height[0])
             fixed['height'] = split_height          
-            cleaned.append(fixed)
-            cleaned_data.append(cleaned)
-            # print(cleaned_data)
-            return(cleaned)
-clean_data(PLAYERS)
-          
-           
+            cleaned_data.append(fixed)
+    
+    # print("cleaned_data>>>>", cleaned_data)
+    
 
-def balance_teams():
+def div_list(li):
+    for item in li:
+        if item['experience']==True:
+            exp_player.append(item)
+        else:
+            inexp_player.append(item)
+           
    
-  start = 0
-  end = len(PLAYERS)    
-  step =num_players_team
-  for i in range(start, end, step):
-    x = i
-  div_list=(cleaned_data[x:x+step]) 
-  
-  print([[*item1, item2,] for item1, item2, in zip(TEAMS, div_list)])
+def balance_teams():
+        
+    numExpPerTeam= int(len(exp_player)/len(TEAMS))
+    numInexpPerTeam=int(len(exp_player)/len(TEAMS))
+    all_players = numExpPerTeam + numInexpPerTeam
+                      
+    for player in exp_player:
+        if len(Panthers) < numExpPerTeam:
+            Panthers.append(player)
+        elif len(Bandits)< numExpPerTeam:
+            Bandits.append(player)
+        else:
+            Warriors.append(player)
+            
+    for player in inexp_player:
+        if len(Panthers) < all_players:
+                          Panthers.append(player)
+        elif len(Bandits) < all_players:
+              Bandits.append(player)
+        else:
+              Warriors.append(player)
+    # print("Panther>>>",Panthers)
+    #print("Bandits>>>",len(Bandits))
+    # print("Warriors>>>",len(Warriors))
 
-
-
-# new_data = []      #optional
-# for i,div_list in enumerate(div_list):
-#     div_list.append(Teams[i])
-#     new_data.append(div_list)
-
-# print(new_data)
-
-    
-
-    
-
-
-    
-    #insert dunder main
-#wrap below in a function
-    
-# while True:    
-#     print("BASKETBALL TEAM STATS TOOL ")
-#     print("\n")
-#     print("----MENU----")
-#     print("\n")    
-#     print(" Here are your choices:\nA) Display Team Stats \nB) Quit \n")
-#     option=input("\nEnter an option  A/B:  ").lower()
-#     try:
-#         if option=='a':
-#             continue             
-#             print("\n A) Panthers \n B) Bandits \n C) Warriors")
-#             userTeamOption=input("Enter an option A/B/C:  ").lower()
-#             try:
-#                 if userTeamOption== 'a':
-#                     balance_teams()
-                   
-# #Team: Panthers Stats
-# #            --------------------
-# #            Total players: 6
-# #            Total experienced: 3
-# #            Total inexperienced: 3
-# #            Average height: 42.5
-#     elif option =='b':
-#             print("Goodbye!")
-#             break
-#     except ValueError:
-#         print('Oops....choose A or B')
-#         continue
-           
-    
+def start():
+  while True:    
+    print("\n BASKETBALL TEAM STATS TOOL ")
+    print("\n")
+    print("----MENU----")
+    print("\n")    
+    print("\nHere are your choices:\nA) Display Team Stats \nB) Quit \n")
+    option=input("\nEnter an option  A/B:  ").lower()
+    if option== "":
+      print("Option can't be left blank!")
+      continue
+    elif option.isnumeric():
+      print("Can't be a number!Try again...")
+      continue
+    elif option != "a" and option != "b" :
+      print("Not a valid option! Please select from the menu")
      
+      
+    elif option == "a":
+      print("\n A) Panthers")
+      print("\n B) Bandits")
+      print("\n C) Warriors")
+      
+    else:
+      option =='b'
+      print("Goodbye!")
+      break
+
+    userTeamOption=input("Enter an option A/B/C:  ").lower()
+    if userTeamOption == "":
+      print("Option can't be left blank!")
+      continue
+    elif userTeamOption.isnumeric():
+      print("Can't be a number!Try again...")
+      continue
+    elif userTeamOption != "a" and option != "b" != "c":
+      print("Not a valid option! Please select from the menu")
+      continue
+          
+    if userTeamOption == "a":
+       print("\nTEAM:Panthers Stats" )
+       print("\n__________________")
+       print(f"\n Total players:{len(Panthers)}")    
+       print(f"\n Total experienced:{int(len(Panthers)/2)}")
+       print(f"\n Total experienced:{int(len(Panthers) /2)}")
+         
+       heightList = []
+       for player in Panthers:
+          for key,value in player.items():
+            if key =="height":
+               val = value
+               heightList.append(val)
+       print(f"\n Average height:{mean(heightList)}")
+  
+       list_players = []
+       for player in Panthers:
+            for key,value in player.items():
+              if key =="name":
+                 val = value
+                 list_players.append(val)        
+                 c = ','.join(list_players)
+       print(f"\n Players on the Team: \n  {c} ")
+   
+
+       guardians_players = []
+       for player in Panthers:
+          for key,value in player.items():
+            if key =="guardians":
+              val = value
+              guardians_players.append(val)               
+              guardian = ','.join(list_players)              
+       print(f"\n Guardians: \n  {guardian}")
+  
+
+    elif userTeamOption=="b":
+       print("\nTEAM:Bandits Stats" )
+       print("\n__________________")
+       print(f"\n Total players:{len(Bandits)}")    
+       print(f"\n Total experienced:{int(len(Bandits)/2)}")
+       print(f"\n Total experienced:{int(len(Bandits) /2)}")
+       
+    heightList = []
+    for player in Bandits:
+        for key,value in player.items():
+          if key =="height":
+             val = value
+             heightList.append(val)
+    print(f"\n Average height:{mean(heightList)}")
+
+    list_players = []
+    for player in Bandits:
+        for key,value in player.items():
+          if key =="name":
+             val = value
+             list_players.append(val)        
+             c = ','.join(list_players)
+    print(f"\n Players on the Team: \n  {c} ")
+   
+    guardians_players = []
+    for player in Bandits:
+        for key,value in player.items():
+          if key =="guardians":
+            val = value
+            guardians_players.append(val)                   
+            guardian = ','.join(list_players)                  
+    print(f"\n Guardians: \n  {guardian}")
+
+  else: 
+       print("\nTEAM:Warriors Stats" )
+       print("\n__________________")
+       print(f"\n Total players:{len(Warriors)}")    
+       print(f"\n Total experienced:{int(len(Warriors)/2)}")
+       print(f"\n Total experienced:{int(len(Warriors) /2)}")
+       
+       heightList = []
+       for player in Warriors:
+        for key,value in player.items():
+          if key =="height":
+             val = value
+             heightList.append(val)
+       print(f"\n Average height:{mean(heightList)}")
+
+       list_players = []
+       for player in Warriors:
+        for key,value in player.items():
+          if key =="name":
+             val = value
+             list_players.append(val)        
+             c = ','.join(list_players)
+       print(f"\n Players on the Team: \n  {c} ")
+   
+
+       guardians_players = []
+       for player in Warriors:
+        for key,value in player.items():
+          if key =="guardians":
+            val = value
+            guardians_players.append(val)                   
+            guardian = ','.join(list_players)                  
+       print(f"\n Guardians: \n  {guardian}")
+
+if __name__ == '__main__':
+  clean_data(PLAYERS)
+  div_list(cleaned_data)
+  balance_teams()
+  start()
