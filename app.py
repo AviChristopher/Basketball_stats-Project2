@@ -91,7 +91,7 @@ def get_options(arg):
             if key =="guardians":
                 val = value
                 guardians_players.append(val)                   
-                li2 = ','.join(str(guardian) for guardian in guardians_players)                 
+                li2 = ','.join(str(guardian) for guardian in guardians_players)   #HELP              
     print(f"\n Guardians: \n  {li2}")  
     input("Press Enter to continue...")
     
