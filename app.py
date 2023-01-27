@@ -3,6 +3,7 @@ from constants import TEAMS
 from constants import PLAYERS
 from copy import deepcopy
 from statistics import mean
+import itertools
 
 
 cleaned_data=[]
@@ -19,8 +20,7 @@ def clean_data():
     for player in PLAYERS:            
             fixed={}
             fixed['name']=player['name']
-            split_guardians= player['guardians'].split('and')
-            fixed['guardians']=split_guardians          
+            fixed['guardians']= player['guardians'].split('and')                   
             if player['experience']=='YES':
                 fixed['experience'] = True              
             else:
@@ -66,9 +66,10 @@ def get_options(arg):
     list_players = []
     guardians_players = []
     
+    arg = sorted(arg, key=lambda i: i['height'])  
     print(f"\n Total players:{len(arg)}")    
     print(f"\n Total experienced:{int(len(arg)/2)}")
-    print(f"\n Total experienced:{int(len(arg)/2)}")
+    print(f"\n Total inexperienced:{int(len(arg)/2)}")
     
     for x in arg:
         for key,value in x.items():
@@ -76,8 +77,10 @@ def get_options(arg):
                 val = value
                 heightList.append(val)
     print(f"\n Average height:{mean(heightList)}")
+    
+    
         
-    for x in arg:
+    for x in arg:        
         for key,value in x.items():
             if key =="name":
                 val = value
@@ -85,15 +88,18 @@ def get_options(arg):
                 li = ','.join(list_players)                
     print(f"\n Players on the Team: \n  {li} ")
     
-    
-    for i in arg:
+              
+    for i in arg:   
         for key,value in i.items():
             if key =="guardians":
                 val = value
-                guardians_players.append(val)                   
-                li2 = ','.join(str(guardian) for guardian in guardians_players)   #HELP              
-    print(f"\n Guardians: \n  {li2}")  
-    input("Press Enter to continue...")
+                guardians_players.append(val)
+                li2=guardians_players
+                li2= list(itertools.chain(*li2))
+                guardian=','.join(li2)                              
+    print(f"\n Guardians: \n  {guardian}") 
+       
+    input("\nPress Enter to continue...")
     
     
 
@@ -158,11 +164,6 @@ if __name__ == '__main__':
     div_list(cleaned_data)
     balance_teams()
     start()
-
-
-#   my_list = ['[bobby]', '[hadz]', '[com]']
-#
-#result = [item.replace('[', '').replace(']', '') for item in my_list]
-#print(result)  # 👉️ ['bobby', 'hadz', 'com']
-
+    
+    
 
