@@ -40,7 +40,7 @@ def div_list(arg):
             else:
                 inexp_player.append(item)                          
         
-def balance_teams():      
+def balance_teams():      #This page helped me alot to figure out how to balance the teams.https://github.com/RafatBAhmad/Python-Project-number-2/blob/main/application.py
     numExpPerTeam= int(len(exp_player)/len(TEAMS))
     numInexpPerTeam=int(len(exp_player)/len(TEAMS))
     all_players = numExpPerTeam + numInexpPerTeam                      
