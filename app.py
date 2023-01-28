@@ -4,6 +4,7 @@ from constants import PLAYERS
 from copy import deepcopy
 from statistics import mean
 import itertools
+import string
 
 
 cleaned_data=[]
@@ -40,7 +41,7 @@ def div_list(arg):
             else:
                 inexp_player.append(item)                          
         
-def balance_teams():      #Credit to-https://github.com/RafatBAhmad/Python-Project-number-2/blob/main/application.py
+def balance_teams():                               #Credit to-https://github.com/RafatBAhmad/Python-Project-number-2/blob/main/application.py
     numExpPerTeam= int(len(exp_player)/len(TEAMS))
     numInexpPerTeam=int(len(exp_player)/len(TEAMS))
     all_players = numExpPerTeam + numInexpPerTeam                      
@@ -102,7 +103,15 @@ def get_options(arg):
     input("\nPress Enter to continue...")
     
     
-
+def get_teams(li):
+    t = []
+    for i, word in zip(string.ascii_uppercase, li): 
+        obj = {
+            i:word
+        }
+        t.append(obj)
+   
+    return t
 
 
 
@@ -124,9 +133,10 @@ def start():
             elif option != "a" and option != "b" :
                 print("Not a valid option! Please select from the menu")      
             elif option == "a":
-                print("\n A) Panthers")
-                print("\n B) Bandits")
-                print("\n C) Warriors")      
+                l1 = get_teams(TEAMS)
+                for i in l1:
+                    for j in i.items():
+                        print(f"{j[0]} : {j[1]}") 
             elif option =='b':
                 print("Goodbye!")
                 break
@@ -142,21 +152,22 @@ def start():
                 print("Not a valid option! Please select from the menu")
                 continue                
                 break
+            
             elif userTeamOption == "a":
-                print("    _-_-TEAM_-_-")
-                print("\n===Panthers Stats===" )
+                print("\n    _-_-TEAM_-_-")
+                print( f"\n=={TEAMS[0]} Stats==")
                 get_options(Panthers1)
                             
             elif userTeamOption=="b":
-                print("    _-_-TEAM_-_-")
-                print("\n===Bandits Stats===" )
+                print("\n    _-_-TEAM_-_-")
+                print(f"\n== {TEAMS[1]} Stats==")
                 get_options(Bandits1)                
             else:
-                print("    _-_-TEAM_-_-")
-                print("\n===Warriors Stats===" )
+                print("\n    _-_-TEAM_-_-")
+                print(f"\n =={TEAMS[2]} Stats==")
                 get_options(Warriors1)
             
-    
+                
         
         
 if __name__ == '__main__':        
@@ -165,5 +176,8 @@ if __name__ == '__main__':
     balance_teams()
     start()
     
+    
+
+
     
 
